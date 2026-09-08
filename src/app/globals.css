@@ -1,0 +1,10 @@
+/* Initial creation: Tailwind import + dark-mode-first base styles (zinc/slate palette). */
+@import "tailwindcss";
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #09090b;
+}

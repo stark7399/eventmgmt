@@ -1,0 +1,57 @@
+[debug] [2026-09-08T05:38:55.117Z] ----------------------------------------------------------------------
+[debug] [2026-09-08T05:38:55.121Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\stark\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init firestore
+[debug] [2026-09-08T05:38:55.122Z] CLI Version:   15.29.0
+[debug] [2026-09-08T05:38:55.122Z] Platform:      win32
+[debug] [2026-09-08T05:38:55.122Z] Node Version:  v24.15.0
+[debug] [2026-09-08T05:38:55.123Z] Detected Agent: unknown
+[debug] [2026-09-08T05:38:55.123Z] Time:          Tue Sep 08 2026 11:08:55 GMT+0530 (India Standard Time)
+[debug] [2026-09-08T05:38:55.123Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\dvkr\event mgmt\wedding-app-phase6-crew-retrofit (1)
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-09-08T05:39:58.144Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-08T05:39:58.145Z] > authorizing via signed-in user (stark7399@gmail.com)
+[debug] [2026-09-08T05:39:58.176Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:39:58.177Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:39:58.179Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2026-09-08T05:39:59.264Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-09-08T05:39:59.265Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] 
+=== Firestore Setup
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-09-08T05:40:01.802Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:40:01.802Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:40:01.803Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eventmgmt-148b0/services/firestore.googleapis.com [none]
+[debug] [2026-09-08T05:40:01.803Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eventmgmt-148b0/services/firestore.googleapis.com  x-goog-user-project=eventmgmt-148b0
+[debug] [2026-09-08T05:40:03.654Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eventmgmt-148b0/services/firestore.googleapis.com 200
+[debug] [2026-09-08T05:40:03.654Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eventmgmt-148b0/services/firestore.googleapis.com [omitted]
+[info] +  firestore: required API firestore.googleapis.com is enabled 
+[debug] [2026-09-08T05:40:03.669Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:40:03.670Z] Checked if tokens are valid: true, expires at: 1788849531549
+[debug] [2026-09-08T05:40:03.670Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/eventmgmt-148b0/databases [none]
+[debug] [2026-09-08T05:40:04.687Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/eventmgmt-148b0/databases 200
+[debug] [2026-09-08T05:40:04.687Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/eventmgmt-148b0/databases {"databases":[{"name":"projects/eventmgmt-148b0/databases/(default)","uid":"483bb988-b84e-4ebb-ac46-34e5c5be0b1c","createTime":"2026-09-08T05:21:44.581553Z","updateTime":"2026-09-08T05:21:44.581553Z","locationId":"asia-south1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-09-08T05:21:44.581553Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"j","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","enhancedTextSearchQueryMode":"ENHANCED_QUERY_MODE_ENABLED","etag":"IOLGn9Oi3pYDMLmspNGe3pYD"}]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
