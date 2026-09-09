@@ -1,0 +1,111 @@
+// Latest change: no code changes — this is the same rules file, now paired with a browser-only (no CLI) deploy guide in SETUP.md.
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && myRole() == 'admin';
+    }
+
+    function isCrew() {
+      return isSignedIn() && myRole() == 'crew';
+    }
+
+    function isClient() {
+      return isSignedIn() && myRole() == 'client';
+    }
+
+    // Users can read their own profile; only admins can read/list all profiles.
+    // WARNING: new sign-ups are allowed to create their own profile as 'admin'
+    // (matches AuthContext.tsx's DEFAULT_ROLE). This means anyone who signs up
+    // gets full access - change 'admin' back to 'client' here once real clients
+    // or the public can reach the sign-up page.
+    // Nobody can write their own "role" field directly after creation (prevents
+    // a client from promoting themselves to admin post-signup).
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == userId
+                    && request.resource.data.role == 'admin';
+      allow update: if isAdmin()
+                    || (isSignedIn() && request.auth.uid == userId
+                        && request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
+    }
+
+    // Projects: admins full access. Crew can read projects they're assigned to.
+    // Clients can only read their own project.
+    match /projects/{projectId} {
+      allow read: if isAdmin()
+                  || isCrew()
+                  || (isClient() && resource.data.clientUserId == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    // Equipment: admin manages inventory, crew can view for planning.
+    match /equipment/{itemId} {
+      allow read: if isAdmin() || isCrew();
+      allow write: if isAdmin();
+    }
+
+    // Tasks (to-do lists): admin and crew can read/update; clients cannot.
+    match /tasks/{taskId} {
+      allow read, update: if isAdmin() || isCrew();
+      allow create, delete: if isAdmin();
+    }
+
+    // Crew assignments: admin manages; crew can read their own assignments.
+    // Crew assignments: admin manages. Crew can read all assignments (crewName is a
+    // typed name, not a linked account, so we can't scope to "their own" the way
+    // other collections do) - lets crew see the full roster/shift schedule for planning.
+    match /crewAssignments/{assignmentId} {
+      allow read: if isAdmin() || isCrew();
+      allow write: if isAdmin();
+    }
+
+    // Shot lists: admin and crew can read/update during shoots; clients cannot.
+    // Crew can add/check off/delete shots (they build and execute lists live on shoots),
+    // not just admins - matches the "real-time sync across crew devices" requirement.
+    match /shotLists/{itemId} {
+      allow read, update, create, delete: if isAdmin() || isCrew();
+    }
+
+    // Editing/post-production tasks: admin full access. Crew can read/update all
+    // (assignedTo is a freelance editor's name, not a linked account, so we can't
+    // scope crew access to "their own" cards the way other collections do).
+    match /editingTasks/{taskId} {
+      allow read, update: if isAdmin() || isCrew();
+      allow create, delete: if isAdmin();
+    }
+
+    // Finance records: strictly admin-only. Crew payouts are visible only to admin,
+    // not to the crew member themselves, unless you decide otherwise later.
+    match /finances/{recordId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Calendar events: admin/crew can read for scheduling; clients see only their event.
+    match /calendarEvents/{eventId} {
+      allow read: if isAdmin() || isCrew();
+      allow write: if isAdmin();
+    }
+
+    // Revision requests: clients submit feedback on their own project; admin/crew
+    // read and resolve them. A client can only create a request tied to their own uid.
+    match /revisionRequests/{requestId} {
+      allow read: if isAdmin() || isCrew()
+                  || (isClient() && resource.data.requestedBy == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.requestedBy == request.auth.uid;
+      allow update: if isAdmin() || isCrew();
+      allow delete: if isAdmin();
+    }
+  }
+}
